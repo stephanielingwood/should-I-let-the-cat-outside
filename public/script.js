@@ -16,7 +16,7 @@ $(document).ready(function() {
   $("#locate").on("click", function() {
 // console.log("latlonobj" + latLonObj);
     $.ajax({
-      url: 'http://localhost:3000/findweather',
+      url: 'http://shouldIletmycatoutside.heroku.com/findweather',
       type: "post",
       data: {"latitude": lat, "longitude": lon},
       success: function(data) {
