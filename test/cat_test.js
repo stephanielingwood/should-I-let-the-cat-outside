@@ -14,10 +14,9 @@ describe('checking the weather in Seattle', function() {
   it('should return the current temperature, weather, and winds for a given latitude and longitude', function(done) {
       chai.request('http://localhost:3000')
       .post('/findweather')
-      .send({'latitude': 19.6405, 'longitude': -155.9955582})
+      //lat-long for Hilo, HI: {'latitude': 19.72, 'longitude': -155.07}
+      .send({'latitude': 47.6062078760005, 'longitude': -122.33206612699968})
       .end(function(err,res){
-        console.log('hi');
-        console.log("res.body.conditions " + res.body.conditions);
         expect(res.body).to.have.property('temperature');
         expect(res.body).to.have.property('conditions');
         expect(res.body).to.have.property('windSpeed');
@@ -25,5 +24,3 @@ describe('checking the weather in Seattle', function() {
       });
   });
 });
-
-      // .send({'latitude': 47.6062078760005, 'longitude': -122.33206612699968})
