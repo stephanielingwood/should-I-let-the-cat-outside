@@ -3,7 +3,6 @@
 
 var express = require('express');
 var app = express();
-// var reqLib = require('request');
 var superagent = require('superagent');
 
 var bodyparser = require('body-parser');
@@ -55,11 +54,9 @@ app.post('/findweather', function(req, res) {
 
       var temp = prettified.currentobservation.Temp;
       var weather = prettified.currentobservation.Weather;
-          console.log(typeof(weather));
       var wind = prettified.currentobservation.Winds;
       res.json({temperature: temp, conditions: weather, windSpeed: wind});
       console.log(res.body);
-    // res.send(prettified);
     });
 });
 
