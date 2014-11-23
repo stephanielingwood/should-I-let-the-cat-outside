@@ -1,7 +1,7 @@
 {
   "name": "should-I-let-the-cat-outside",
   "version": "1.0.0",
-  "description": "Answering that eternal question: should I let the cat outside?",
+  "description": "Answering that eternal question: if I let the cat out, will I have to let them right back in again?",
   "main": "server.js",
   "scripts": {
     "test": "node_modules/grunt-cli/bin/grunt"
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/stephanielingwood/should-I-let-the-cat-outside"
   },
-  "author": "tyler@codefellows.com",
+  "author": "stephanielingwood@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/stephanielingwood/should-I-let-the-cat-outside/issues"
@@ -19,6 +19,7 @@
   "dependencies": {
     "body-parser": "^1.9.2",
     "express": "^4.9.8",
+    "jquery": "^2.1.1",
     "request": "^2.48.0",
     "superagent": "^0.21.0"
   },

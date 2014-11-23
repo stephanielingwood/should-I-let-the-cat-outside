@@ -1,5 +1,5 @@
 body {
-    font-size: .75em;
+/*    font-size: 1em;*/
     font-family: verdana;
     text-align: center;
     color: #000000;
@@ -12,7 +12,15 @@ body {
 }
 
 .active {
-  font-size: 8em;
+  font-size: 6em;
   display: block;
   font-style: bold;
+}
+
+#commenttext {
+  font-size: 2em;
+}
+
+#fineprint {
+  font-size: .6em;
 }

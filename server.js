@@ -13,8 +13,6 @@ app.use(bodyparser.urlencoded({
   extended: true
 }));
 
-// app.use(express.json());
-// app.use(express.urlencoded());
 app.use(express.static(__dirname + '/public/'));
 
 
@@ -24,16 +22,10 @@ app.get('/', function(req, res) {
 
 
 app.post('/findweather', function(req, res) {
-  console.log("post req started");
-  console.log(req.body);
 
 //receive lat long from html5 geolocation
   var lat = req.body.latitude;
   var lon = req.body.longitude;
-  // var lat = 47.54583;
-  // var lon = -122.31;
-  console.log('lat ' + lat);
-  console.log('lon ' + lon);
 
   var noaaUrl = 'http://forecast.weather.gov/MapClick.php?lat=' +
     lat +
@@ -51,12 +43,10 @@ app.post('/findweather', function(req, res) {
       if (err) console.log('superagent req error ' + err);
 
       var prettified = JSON.parse(response.text);
-
       var temp = prettified.currentobservation.Temp;
       var weather = prettified.currentobservation.Weather;
       var wind = prettified.currentobservation.Winds;
       res.json({temperature: temp, conditions: weather, windSpeed: wind});
-      console.log(res.body);
     });
 });
 
