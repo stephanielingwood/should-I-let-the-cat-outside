@@ -9197,56 +9197,59 @@ var $ = require('jquery');
 var conditions = require('./conditions.js');
 var comment = require('./comment.js');
 
-$(document).ready(function() {
-//get geolocation data on page load
-  var lat;
-  var lon;
-  var latLonObj;
+var getWeather = function(position) {
+  var lat = position.coords.latitude;
+  var lon = position.coords.longitude;
 
-  navigator.geolocation.getCurrentPosition(function(position) {
-    lat = position.coords.latitude;
-    lon = position.coords.longitude;
-
-    // lat = 19.729719634000446;
-    // lon = -155.0899956029997;
-
-    $("#locate").on("click", function() {
-      $.ajax({
-        url: '/findweather',
-        type: "post",
-        data: {"latitude": lat, "longitude": lon},
-        success: function(data) {
-          var temp = Number(data.temperature);
-          var weather = data.conditions;
-          var wind = Number(data.windSpeed);
-          var noRain = conditions(weather);
-          if (temp > 50 && wind <= 15 && (noRain === true)) {
-            $('#yes').removeClass('hidden');
-            $('#yes').addClass('active');
-            $('#commenttext').html('<p>' + comment('nice') + '</p>');
-          }
-          else {
-            $('#no').removeClass('hidden');
-            $('#no').addClass('active');
-            if (!noRain) $('#commenttext').html(comment('rain'));
-            if (temp <= 50) $('#commenttext').html(comment('cold'));
-            if (wind > 15) $('#commenttext').html(comment('wind'));
-          }
-        },
-        dataType: 'json'
-      });
+  $("#locate").on("click", function() {
+    $.ajax({
+      url: '/findweather',
+      type: "post",
+      data: {"latitude": lat, "longitude": lon},
+      success: function(data) {
+        var temp = Number(data.temperature);
+        var weather = data.conditions;
+        var wind = Number(data.windSpeed);
+        var noRain = conditions(weather);
+        if (temp > 50 && wind <= 15 && (noRain === true)) {
+          $('#yes').removeClass('hidden');
+          $('#yes').addClass('active');
+          $('#commenttext').html('<p>' + comment('nice') + '</p>');
+        }
+        else {
+          $('#no').removeClass('hidden');
+          $('#no').addClass('active');
+          if (!noRain) $('#commenttext').html(comment('rain'));
+          if (temp <= 50) $('#commenttext').html(comment('cold'));
+          if (wind > 15) $('#commenttext').html(comment('wind'));
+        }
+      },
+      dataType: 'json'
     });
   });
+};
+
+$(document).ready(function() {
+//get geolocation data on page load
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(getWeather, function(err) {
+      if (err) $('#commenttext').html(comment('err'));
+    });
+  } else {
+    $('#commenttext').html(comment('nolocation'));
+  }
 });
 
 },{"./comment.js":"/home/stephanie/code/assignments/should-I-let-the-cat-outside/public/comment.js","./conditions.js":"/home/stephanie/code/assignments/should-I-let-the-cat-outside/public/conditions.js","jquery":"/home/stephanie/code/assignments/should-I-let-the-cat-outside/node_modules/jquery/dist/jquery.js"}],"/home/stephanie/code/assignments/should-I-let-the-cat-outside/public/comment.js":[function(require,module,exports){
 'use strict';
 
-module.exports = function(weather) {
-  if (weather === 'nice') return 'Now go open that door.';
-  if (weather === 'rain') return "It's drier in the shower.";
-  if (weather === 'cold') return 'Brr.';
-  if (weather === 'wind') return 'The wind-ruffled look is so ten minutes ago.';
+module.exports = function(input) {
+  if (input === 'nice') return 'Now go open that door.';
+  if (input === 'rain') return "It's drier in the shower.";
+  if (input === 'cold') return 'Brr.';
+  if (input === 'wind') return 'The wind-ruffled look is so ten minutes ago.';
+  if (input === 'err') return 'Allow us access to your location so we can give you proper advice.';
+  if (input === 'nolocation') return "Sorry! We can't find your location.";
 };
 
 },{}],"/home/stephanie/code/assignments/should-I-let-the-cat-outside/public/conditions.js":[function(require,module,exports){

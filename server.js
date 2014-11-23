@@ -15,11 +15,9 @@ app.use(bodyparser.urlencoded({
 
 app.use(express.static(__dirname + '/public/'));
 
-
 app.get('/', function(req, res) {
   res.sendfile('index.html');
 });
-
 
 app.post('/findweather', function(req, res) {
 
@@ -32,7 +30,6 @@ app.post('/findweather', function(req, res) {
     '&lon=' +
     lon +
     '&unit=0&lg=english&FcstType=json';
-
 
   superagent
 //use that lat and long in the request to weather.gov
@@ -49,7 +46,6 @@ app.post('/findweather', function(req, res) {
       res.json({temperature: temp, conditions: weather, windSpeed: wind});
     });
 });
-
 
 app.listen(port, function() {
   console.log('Server started on port %d', port);
