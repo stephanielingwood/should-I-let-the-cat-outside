@@ -3,7 +3,7 @@
 var chai = require('chai');
 var chaihttp = require("chai-http");
 var expect = chai.expect;
-require('../server.js');
+require('../../server.js');
 chai.use(chaihttp);
 var port = process.env.PORT || 3000;
 

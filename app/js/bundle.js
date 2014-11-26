@@ -1,4 +1,91 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/stephanie/code/assignments/should-I-let-the-cat-outside/node_modules/jquery/dist/jquery.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/stephanie/code/assignments/should-I-let-the-cat-outside/app/js/app.js":[function(require,module,exports){
+'use strict';
+
+var $ = require('jquery');
+var conditions = require('./conditions.js');
+var comment = require('./comment.js');
+
+var getWeather = function(position) {
+  var lat = position.coords.latitude;
+  var lon = position.coords.longitude;
+
+  $("#locate").on("click", function() {
+    $.ajax({
+      url: '/findweather',
+      type: "post",
+      data: {"latitude": lat, "longitude": lon},
+      success: function(data) {
+        var temp = Number(data.temperature);
+        var weather = data.conditions;
+        var wind = Number(data.windSpeed);
+        var noRain = conditions(weather);
+        if (temp > 50 && wind <= 15 && (noRain === true)) {
+          $('#yes').removeClass('hidden');
+          $('#yes').addClass('active');
+          $('#commenttext').html('<p>' + comment('nice') + '</p>');
+        }
+        else {
+          $('#no').removeClass('hidden');
+          $('#no').addClass('active');
+          if (!noRain) $('#commenttext').html(comment('rain'));
+          if (temp <= 50) $('#commenttext').html(comment('cold'));
+          if (wind > 15) $('#commenttext').html(comment('wind'));
+        }
+      },
+      dataType: 'json'
+    });
+  });
+};
+
+$(document).ready(function() {
+//get geolocation data on page load
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(getWeather, function(err) {
+      if (err) $('#commenttext').html(comment('err'));
+    });
+  } else {
+    $('#commenttext').html(comment('nolocation'));
+  }
+});
+
+},{"./comment.js":"/home/stephanie/code/assignments/should-I-let-the-cat-outside/app/js/comment.js","./conditions.js":"/home/stephanie/code/assignments/should-I-let-the-cat-outside/app/js/conditions.js","jquery":"/home/stephanie/code/assignments/should-I-let-the-cat-outside/node_modules/jquery/dist/jquery.js"}],"/home/stephanie/code/assignments/should-I-let-the-cat-outside/app/js/comment.js":[function(require,module,exports){
+'use strict';
+
+module.exports = function(input) {
+  if (input === 'nice') return 'Now go open that door.';
+  if (input === 'rain') return "It's drier in the shower.";
+  if (input === 'cold') return 'Brr.';
+  if (input === 'wind') return 'The wind-ruffled look is so ten minutes ago.';
+  if (input === 'err') return 'Allow us access to your location so we can give you proper advice.';
+  if (input === 'nolocation') return "Sorry! We can't find your location.";
+};
+
+},{}],"/home/stephanie/code/assignments/should-I-let-the-cat-outside/app/js/conditions.js":[function(require,module,exports){
+'use strict';
+
+module.exports = function(weather) {
+  if (weather === 'Clear') return true;
+  if (weather === 'Clear with Haze') return true;
+  if (weather === 'Clear and Breezy') return true;
+  if (weather === 'Fair') return true;
+  if (weather === 'Fair with Haze') return true;
+  if (weather === 'Fair and Breezy') return true;
+  if (weather === 'A Few Clouds') return true;
+  if (weather === 'A Few Clouds with Haze') return true;
+  if (weather === 'A Few Clouds and Breezy') return true;
+  if (weather === 'Partly Cloudy') return true;
+  if (weather === 'Partly Cloudy with Haze') return true;
+  if (weather === 'Partly Cloudy and Breezy') return true;
+  if (weather === 'Mostly Cloudy') return true;
+  if (weather === 'Mostly Cloudy with Haze') return true;
+  if (weather === 'Mostly Cloudy and Breezy') return true;
+  if (weather === 'Overcast') return true;
+  if (weather === 'Overcast with Haze') return true;
+  if (weather === 'Overcast and Breezy') return true;
+  return false;
+};
+
+},{}],"/home/stephanie/code/assignments/should-I-let-the-cat-outside/node_modules/jquery/dist/jquery.js":[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.1
  * http://jquery.com/
@@ -9190,91 +9277,4 @@ return jQuery;
 
 }));
 
-},{}],"/home/stephanie/code/assignments/should-I-let-the-cat-outside/public/app.js":[function(require,module,exports){
-'use strict';
-
-var $ = require('jquery');
-var conditions = require('./conditions.js');
-var comment = require('./comment.js');
-
-var getWeather = function(position) {
-  var lat = position.coords.latitude;
-  var lon = position.coords.longitude;
-
-  $("#locate").on("click", function() {
-    $.ajax({
-      url: '/findweather',
-      type: "post",
-      data: {"latitude": lat, "longitude": lon},
-      success: function(data) {
-        var temp = Number(data.temperature);
-        var weather = data.conditions;
-        var wind = Number(data.windSpeed);
-        var noRain = conditions(weather);
-        if (temp > 50 && wind <= 15 && (noRain === true)) {
-          $('#yes').removeClass('hidden');
-          $('#yes').addClass('active');
-          $('#commenttext').html('<p>' + comment('nice') + '</p>');
-        }
-        else {
-          $('#no').removeClass('hidden');
-          $('#no').addClass('active');
-          if (!noRain) $('#commenttext').html(comment('rain'));
-          if (temp <= 50) $('#commenttext').html(comment('cold'));
-          if (wind > 15) $('#commenttext').html(comment('wind'));
-        }
-      },
-      dataType: 'json'
-    });
-  });
-};
-
-$(document).ready(function() {
-//get geolocation data on page load
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(getWeather, function(err) {
-      if (err) $('#commenttext').html(comment('err'));
-    });
-  } else {
-    $('#commenttext').html(comment('nolocation'));
-  }
-});
-
-},{"./comment.js":"/home/stephanie/code/assignments/should-I-let-the-cat-outside/public/comment.js","./conditions.js":"/home/stephanie/code/assignments/should-I-let-the-cat-outside/public/conditions.js","jquery":"/home/stephanie/code/assignments/should-I-let-the-cat-outside/node_modules/jquery/dist/jquery.js"}],"/home/stephanie/code/assignments/should-I-let-the-cat-outside/public/comment.js":[function(require,module,exports){
-'use strict';
-
-module.exports = function(input) {
-  if (input === 'nice') return 'Now go open that door.';
-  if (input === 'rain') return "It's drier in the shower.";
-  if (input === 'cold') return 'Brr.';
-  if (input === 'wind') return 'The wind-ruffled look is so ten minutes ago.';
-  if (input === 'err') return 'Allow us access to your location so we can give you proper advice.';
-  if (input === 'nolocation') return "Sorry! We can't find your location.";
-};
-
-},{}],"/home/stephanie/code/assignments/should-I-let-the-cat-outside/public/conditions.js":[function(require,module,exports){
-'use strict';
-
-module.exports = function(weather) {
-  if (weather === 'Clear') return true;
-  if (weather === 'Clear with Haze') return true;
-  if (weather === 'Clear and Breezy') return true;
-  if (weather === 'Fair') return true;
-  if (weather === 'Fair with Haze') return true;
-  if (weather === 'Fair and Breezy') return true;
-  if (weather === 'A Few Clouds') return true;
-  if (weather === 'A Few Clouds with Haze') return true;
-  if (weather === 'A Few Clouds and Breezy') return true;
-  if (weather === 'Partly Cloudy') return true;
-  if (weather === 'Partly Cloudy with Haze') return true;
-  if (weather === 'Partly Cloudy and Breezy') return true;
-  if (weather === 'Mostly Cloudy') return true;
-  if (weather === 'Mostly Cloudy with Haze') return true;
-  if (weather === 'Mostly Cloudy and Breezy') return true;
-  if (weather === 'Overcast') return true;
-  if (weather === 'Overcast with Haze') return true;
-  if (weather === 'Overcast and Breezy') return true;
-  return false;
-};
-
-},{}]},{},["/home/stephanie/code/assignments/should-I-let-the-cat-outside/public/app.js"]);
+},{}]},{},["/home/stephanie/code/assignments/should-I-let-the-cat-outside/app/js/app.js"]);
