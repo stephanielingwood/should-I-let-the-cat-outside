@@ -1,0 +1,21 @@
+{
+  "name": "should-I-let-the-cat-outside",
+  "version": "0.0.0",
+  "homepage": "https://github.com/stephanielingwood/should-I-let-the-cat-outside",
+  "authors": [
+    "Stephanie Lingwood <stephanielingwood@gmail.com>"
+  ],
+  "description": "An app for cats and those who open doors for them.",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1"
+  }
+}

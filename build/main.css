@@ -5,14 +5,14 @@ body {
     color: #000000;
 }
 
+.hidden {
+    display: none;
+}
+
 .active {
   font-size: 6em;
   display: block;
   font-style: bold;
-}
-
-.hidden {
-    display: none;
 }
 
 #commenttext {

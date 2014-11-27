@@ -13,7 +13,7 @@ app.use(bodyparser.urlencoded({
   extended: true
 }));
 
-app.use(express.static(__dirname + '/app/'));
+app.use(express.static(__dirname + '/build/'));
 
 app.get('/', function(req, res) {
   res.sendfile('index.html');
