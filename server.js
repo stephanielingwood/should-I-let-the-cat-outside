@@ -13,34 +13,23 @@ app.use(bodyparser.urlencoded({
   extended: true
 }));
 
-// app.use(express.json());
-// app.use(express.urlencoded());
-app.use(express.static(__dirname + '/public/'));
-
+app.use(express.static(__dirname + '/build/'));
 
 app.get('/', function(req, res) {
   res.sendfile('index.html');
 });
 
-
 app.post('/findweather', function(req, res) {
-  console.log("post req started");
-  console.log(req.body);
 
 //receive lat long from html5 geolocation
   var lat = req.body.latitude;
   var lon = req.body.longitude;
-  // var lat = 47.54583;
-  // var lon = -122.31;
-  console.log('lat ' + lat);
-  console.log('lon ' + lon);
 
   var noaaUrl = 'http://forecast.weather.gov/MapClick.php?lat=' +
     lat +
     '&lon=' +
     lon +
     '&unit=0&lg=english&FcstType=json';
-
 
   superagent
 //use that lat and long in the request to weather.gov
@@ -51,15 +40,12 @@ app.post('/findweather', function(req, res) {
       if (err) console.log('superagent req error ' + err);
 
       var prettified = JSON.parse(response.text);
-
       var temp = prettified.currentobservation.Temp;
       var weather = prettified.currentobservation.Weather;
       var wind = prettified.currentobservation.Winds;
       res.json({temperature: temp, conditions: weather, windSpeed: wind});
-      console.log(res.body);
     });
 });
-
 
 app.listen(port, function() {
   console.log('Server started on port %d', port);
