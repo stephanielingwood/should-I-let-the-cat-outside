@@ -9,8 +9,10 @@ build:
     pull: true
     options: --privileged=true --net=bridge
   ci:
+    - df -h
     - npm install -g bower grunt-cli -y
     - npm install --unsafe-perm
     - bower --version
     - bower install --allow-root -V
     - grunt
+    - df -h
