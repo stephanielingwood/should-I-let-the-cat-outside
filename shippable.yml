@@ -1,0 +1,16 @@
+language: node_js
+
+node_js: "0.12"
+
+build:
+  pre_ci_boot:
+    image_name: shippableimages/ubuntu1204_nodejs
+    image_tag: latest
+    pull: true
+    options: --privileged=true --net=bridge
+  ci:
+    - npm install -g bower grunt-cli -y
+    - npm install --unsafe-perm
+    - bower --version
+    - bower install --allow-root -V
+    - grunt
